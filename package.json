@@ -1,0 +1,61 @@
+{
+  "name": "bceditor",
+  "version": "0.0.1",
+  "author": "wesley.wang",
+  "private": true,
+  "engines": {
+    "node": ">=v16.13",
+    "npm": ">=8.1"
+  },
+  "main": "packages/main/dist/index.cjs",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "precompile": "cross-env MODE=production npm run build",
+    "compile": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder build --config electron-builder.config.js --config.asar=true",
+    "pretest": "npm run build",
+    "test": "node tests/app.spec.js",
+    "watch": "node scripts/watch.js",
+    "lint": "eslint . --ext js,ts,vue"
+  },
+  "browserslist": [
+    "Chrome 94"
+  ],
+  "lint-staged": {
+    "*.{js,ts,vue}": "eslint --cache --fix"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "1.9.4",
+    "cross-env": "7.0.3",
+    "electron": "15.3.0",
+    "electron-builder": "22.13.1",
+    "electron-devtools-installer": "3.2.0",
+    "eslint": "8.1.0",
+    "eslint-plugin-vue": "8.0.3",
+    "lint-staged": "11.2.6",
+    "playwright": "1.16.3",
+    "simple-git-hooks": "2.7.0",
+    "vite": "2.6.13"
+  },
+  "dependencies": {
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "audio-decode": "^1.4.0",
+    "av": "^0.4.9",
+    "buffer-alloc": "^1.2.0",
+    "cos-nodejs-sdk-v5": "^2.10.10",
+    "electron-config": "^2.0.0",
+    "electron-updater": "4.6.1",
+    "har-validator": "^5.1.5",
+    "lamejs": "1.2.0",
+    "md5": "^2.3.0",
+    "mp3.js": "^0.2.0",
+    "node-wav": "^0.0.2",
+    "numjs": "^0.16.1",
+    "request": "^2.88.2",
+    "speaker": "^0.5.3",
+    "tencentcloud-sdk-nodejs": "^4.0.235",
+    "uuid": "^8.3.2",
+    "vue": "3.2.21",
+    "vue-router": "4.0.12",
+    "vuex": "^4.0.2"
+  }
+}
