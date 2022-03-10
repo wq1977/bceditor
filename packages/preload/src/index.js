@@ -12,6 +12,7 @@ var Speaker = require("speaker");
 const bufferAlloc = require("buffer-alloc");
 const md5 = require("md5");
 const lamejs = require("lamejs");
+const { machineIdSync } = require("node-machine-id");
 const apiKey = "electron";
 let bufferReader, playing, speaker;
 
@@ -65,6 +66,7 @@ init();
 const api = {
   versions: process.versions,
   txkey: key,
+  machineId: machineIdSync(),
   async selectMedia(path) {
     if (!path) {
       const result = await ipcRenderer.invoke("select-media");
