@@ -9,6 +9,7 @@
             style="position: absolute; left: 0; right: 0; top: 0; bottom: 0"
           ></div>
           <div
+            v-if="progressValue(p) > 0.01"
             class="progress_front"
             :style="{ right: progress(p) }"
             style="position: absolute; left: 0; top: 0; bottom: 0"
@@ -31,9 +32,11 @@ export default {
         asr: "文本识别",
       }[key];
     },
+    progressValue(key) {
+      return (this.allProgress || {})[key] || 0;
+    },
     progress(key) {
-      const value = 1 - ((this.allProgress || {})[key] || 0);
-      return `${value * 100}%`;
+      return `${(1 - this.progressValue(key)) * 100}%`;
     },
   },
   computed: {
