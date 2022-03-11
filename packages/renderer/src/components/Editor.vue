@@ -69,7 +69,15 @@ export default defineComponent({
   setup() {
     const { play, stop, asr, loadasr, writeFileSync, txkey, machineId } =
       useElectron();
-    return { play, stop, asr, loadasr, writeFileSync, txkey, machineId };
+    return {
+      play,
+      stop,
+      asr,
+      loadasr,
+      writeFileSync,
+      txkey,
+      machineId,
+    };
   },
   data() {
     return {
@@ -104,27 +112,6 @@ export default defineComponent({
       });
     },
     async doText() {
-      if (!this.txkey) {
-        //如果本地加载腾讯云的Token失败，就通过机器ID远程查询支付信息
-        const rsp = await this.getPayInfo(this.machineId);
-        // 如果机器已经支付成功，将会返回正确的腾讯云配置
-        if (rsp.txkey) {
-          await this.setTxKey(rsp.txkey);
-        } else {
-          switch (rsp.err) {
-            // 这台机器没有付费，跳到赞助页面
-            case 1:
-              break;
-            //这台机器的付费信息已过期，跳到赞助页面
-            case 2:
-              break;
-            //已经停止服务或者其他异常，您可以稍后重试
-            default:
-              break;
-          }
-          return;
-        }
-      }
       this.inASR = true;
       this.$store.commit("editor/set", {
         asrProgress: {},

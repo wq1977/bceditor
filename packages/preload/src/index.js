@@ -67,6 +67,13 @@ const api = {
   versions: process.versions,
   txkey: key,
   machineId: machineIdSync(),
+  setTxKey(cfg) {
+    key = cfg;
+    require("fs").writeFileSync(
+      require("path").join(require("os").homedir(), ".bceditor.json"),
+      JSON.stringify(cfg)
+    );
+  },
   async selectMedia(path) {
     if (!path) {
       const result = await ipcRenderer.invoke("select-media");

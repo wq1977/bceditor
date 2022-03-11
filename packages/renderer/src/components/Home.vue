@@ -1,5 +1,5 @@
 <template>
-  <div class="homeroot">
+  <div class="homeroot container">
     <div v-if="loading">Loading ...</div>
     <div class="optgroup lh-lg p-5" style="text-align: justify" v-else>
       <h1>欢迎使用</h1>
@@ -7,43 +7,94 @@
         <span class="fw-bolder">BCEditor</span>
         是一个简单的播客编辑软件，它的特点是可以首先将声音转换成文本，然后让你可以像编辑word文档一样编辑声音文件。
       </p>
-
-      <ul>
-        <li :class="{ 'fw-bold': btnfocus === 0 }">
-          录制播客通常会使用专用设备将声音按照每个人一个音轨的方式录制成wav格式，如果你已经有原始的wav格式的文件需要进行编辑，请选择下面三个按钮中最左边的那个。
-        </li>
-        <li :class="{ 'fw-bold': btnfocus === 1 }">
-          如果你想要编辑一个以前的工程，请选择第二个按钮，打开以前工程目录中的proj.json这个文件。
-        </li>
-        <li :class="{ 'fw-bold': btnfocus === 2 }">
-          如果你在录制过程中发生中断，需要把多个中断的Wav文件合并成一个，请选择下面第三个按钮。
-        </li>
-      </ul>
-      <div class="d-flex">
-        <button
-          class="homebtn btn btn-outline-primary"
-          style="flex: 1"
-          @mouseover="btnFocus(0)"
-          @click="doload"
-        >
-          加载声音文件(*仅支持wav格式，可多选)
-        </button>
-        <button
-          class="homebtn btn btn-outline-secondary"
-          style="flex: 1"
-          @mouseover="btnFocus(1)"
-          @click="doOpen"
-        >
-          打开工程文件
-        </button>
-        <button
-          class="homebtn btn btn-outline-secondary"
-          style="flex: 1"
-          @mouseover="btnFocus(2)"
-          @click="doJoinWav"
-        >
-          工具 -> 合并 Wav
-        </button>
+      <div v-if="keyReady">
+        <ul class="mt-5">
+          <li :class="{ 'fw-bold': btnfocus === 0 }">
+            录制播客通常会使用专用设备将声音按照每个人一个音轨的方式录制成wav格式，如果你已经有原始的wav格式的文件需要进行编辑，请选择下面三个按钮中最左边的那个。
+          </li>
+          <li :class="{ 'fw-bold': btnfocus === 1 }">
+            如果你想要编辑一个以前的工程，请选择第二个按钮，打开以前工程目录中的proj.json这个文件。
+          </li>
+          <li :class="{ 'fw-bold': btnfocus === 2 }">
+            如果你在录制过程中发生中断，需要把多个中断的Wav文件合并成一个，请选择下面第三个按钮。
+          </li>
+        </ul>
+        <div class="d-flex mt-5 px-5">
+          <button
+            class="homebtn btn btn-outline-primary"
+            style="flex: 1"
+            @mouseover="btnFocus(0)"
+            @click="doload"
+          >
+            加载声音文件(*仅支持wav格式，可多选)
+          </button>
+          <button
+            class="homebtn btn btn-outline-secondary"
+            style="flex: 1"
+            @mouseover="btnFocus(1)"
+            @click="doOpen"
+          >
+            打开工程文件
+          </button>
+          <button
+            class="homebtn btn btn-outline-secondary"
+            style="flex: 1"
+            @mouseover="btnFocus(2)"
+            @click="doJoinWav"
+          >
+            工具 -> 合并 Wav
+          </button>
+        </div>
+      </div>
+      <div v-else>
+        <p class="text-center">
+          BCEditor需要使用腾讯云进行文本识别，您需要先自行注册腾讯云服务，然后提供下述信息
+        </p>
+        <form class="row g-3 px-5" ref="txconf">
+          <div class="col-md-6">
+            <label class="form-label">COS 存储桶</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="tbucket"
+              placeholder="recs-xxxx"
+              required
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">COS 区域</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="tzone"
+              placeholder="ap-beijing"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <label for="inputAddress" class="form-label">SID</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="tsid"
+              placeholder="AKIDxxxxxxx"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <label class="form-label">Key</label>
+            <input
+              type="text"
+              class="form-control"
+              v-model="tkey"
+              placeholder="wdxxxxxxxx"
+              required
+            />
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-primary">保存</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -56,18 +107,52 @@ import { useElectron } from "../use/electron";
 export default defineComponent({
   name: "HelloWorld",
   setup() {
-    const { selectWavs, selectMedia, openProj, joinWav } = useElectron();
-    return { selectWavs, selectMedia, openProj, joinWav };
+    const { selectWavs, selectMedia, openProj, joinWav, txkey, setTxKey } =
+      useElectron();
+    return { selectWavs, selectMedia, openProj, joinWav, txkey, setTxKey };
   },
 
   data() {
     return {
       loading: false,
       btnfocus: 0,
+      tbucket: "",
+      tzone: "",
+      tkey: "",
+      tsid: "",
+      newKey: false,
     };
   },
 
+  computed: {
+    keyReady() {
+      return this.txkey || this.newKey;
+    },
+  },
+
   mounted() {
+    const form = this.$refs.txconf;
+    if (form) {
+      form.addEventListener(
+        "submit",
+        (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (!form.checkValidity()) {
+            return;
+          }
+          form.classList.add("was-validated");
+          this.newKey = {
+            tbucket: this.tbucket,
+            tkey: this.tkey,
+            tsid: this.tsid,
+            tzone: this.tzone,
+          };
+          this.setTxKey({ ...this.newKey });
+        },
+        false
+      );
+    }
     this.recovery();
   },
 
@@ -169,7 +254,6 @@ export default defineComponent({
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20vw;
 }
 .homebtn {
   margin-bottom: 10px;
