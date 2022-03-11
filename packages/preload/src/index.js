@@ -27,6 +27,7 @@ try {
       )
       .toString()
   );
+  initASRClient();
 } catch (ex) {
   console.log("error when parse config file", ex);
 }
@@ -37,20 +38,24 @@ let fileBase;
 
 const tencentcloud = require("tencentcloud-sdk-nodejs");
 const AsrClient = tencentcloud.asr.v20190614.Client;
-const clientConfig = {
-  credential: {
-    secretId: key.tsid,
-    secretKey: key.tkey,
-  },
-  region: key.tzone,
-  profile: {
-    httpProfile: {
-      endpoint: "asr.tencentcloudapi.com",
-    },
-  },
-};
+let client;
 
-const client = new AsrClient(clientConfig);
+function initASRClient() {
+  const clientConfig = {
+    credential: {
+      secretId: key.tsid,
+      secretKey: key.tkey,
+    },
+    region: key.tzone,
+    profile: {
+      httpProfile: {
+        endpoint: "asr.tencentcloudapi.com",
+      },
+    },
+  };
+
+  client = new AsrClient(clientConfig);
+}
 
 function init() {
   const HZ = 1000;
@@ -73,6 +78,7 @@ const api = {
       require("path").join(require("os").homedir(), ".bceditor.json"),
       JSON.stringify(cfg)
     );
+    initASRClient();
   },
   async selectMedia(path) {
     if (!path) {
