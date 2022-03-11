@@ -115,7 +115,7 @@ export default {
       this.end = false;
       this.updateWordSafe();
     });
-    this.updateWordSafe;
+    this.updateWordSafe();
   },
   methods: {
     async updateWordSafe() {

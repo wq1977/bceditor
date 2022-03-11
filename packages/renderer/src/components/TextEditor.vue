@@ -1,5 +1,5 @@
 <template>
-  <div class="rootwrapper">
+  <div class="rootwrapper bg-light">
     <div class="textroot">
       <AsrProgress v-if="inExport" :names="['wav', 'mp3']" />
       <div class="optpanel">
@@ -59,8 +59,8 @@
         </button>
       </div>
       <div class="texteditorwrapper">
-        <div class="texteditor">
-          <div v-if="!isPlaying" class="src">
+        <div class="texteditor p-2">
+          <div v-if="!isPlaying" class="src border pt-2 px-2">
             <div
               @click="addline(idx)"
               class="line"
@@ -79,7 +79,7 @@
               {{ idx + 1 }} {{ line.sentence }}
             </div>
           </div>
-          <div class="dst">
+          <div class="dst border pt-2 px-2">
             <div
               @click="doclick($event, idx)"
               @dblclick="removeLine(idx)"
@@ -480,7 +480,6 @@ export default defineComponent({
 }
 .dst {
   flex: 3;
-  margin-left: 0.5em;
   overflow-y: scroll;
 }
 .line {

@@ -1,7 +1,7 @@
 <template>
   <div style="height: 100vh; display: flex; flex-direction: column">
     <nav v-if="layout == 1" class="titlebar navbar navbar-dark bg-dark">
-      <h3 class="navbar-brand mx-3">播客编辑界面</h3>
+      <span class="navbar-brand mx-3">播客编辑界面</span>
       <div style="flex: 1" />
       <button
         type="button"
