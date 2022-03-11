@@ -10,7 +10,7 @@
   "main": "packages/main/dist/index.cjs",
   "scripts": {
     "build": "node scripts/build.js",
-    "precompile": "cross-env MODE=production npm run build",
+    "precompile": "npm version --new-version patch && cross-env MODE=production npm run build",
     "compile": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder build --config electron-builder.config.js --config.asar=true",
     "pretest": "npm run build",
     "test": "node tests/app.spec.js",
