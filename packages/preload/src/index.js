@@ -317,6 +317,8 @@ const api = {
       fs.writeFileSync(mp3Path, mp3data);
       await ps("mp3", 1);
     } else {
+      await ps("wav", 1);
+      await ps("mp3", 1);
       console.log("mp3 exists");
     }
     if (!require("fs").existsSync(jsonPath)) {
