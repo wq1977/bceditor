@@ -17,6 +17,9 @@ const apiKey = "electron";
 let bufferReader, playing, speaker;
 
 const audioDecode = require("audio-decode");
+const tencentcloud = require("tencentcloud-sdk-nodejs");
+const AsrClient = tencentcloud.asr.v20190614.Client;
+let client;
 
 let key = false;
 try {
@@ -35,10 +38,6 @@ try {
 let wavSources = {};
 let beepSample;
 let fileBase;
-
-const tencentcloud = require("tencentcloud-sdk-nodejs");
-const AsrClient = tencentcloud.asr.v20190614.Client;
-let client;
 
 function initASRClient() {
   const clientConfig = {
