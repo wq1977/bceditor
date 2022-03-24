@@ -40,6 +40,7 @@ export function clip2pieces(clip, originidx) {
   let lastOpt = clip.words[0].opt || "";
   let thisopt;
   let offset = 0;
+  let deleteLen = 0;
 
   for (let i = 0; i < clip.words.length; i++) {
     thisopt = clip.words[i].opt || "";
@@ -52,15 +53,10 @@ export function clip2pieces(clip, originidx) {
         })),
       ];
     }
-    if (thisopt !== "del") {
-      offset +=
-        ((clip.startms +
-          clip.words[i].OffsetEndMs -
-          (i == 0
-            ? clip.startms
-            : clip.startms + clip.words[i].OffsetStartMs)) *
-          44100) /
-        1000;
+    if (thisopt === "del") {
+      deleteLen += clip.words[i].OffsetEndMs - clip.words[i].OffsetStartMs;
+    } else {
+      offset = ((clip.words[i].OffsetStartMs - deleteLen) * 44100) / 1000;
     }
 
     if (thisopt !== lastOpt) {
