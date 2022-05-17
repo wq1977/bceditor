@@ -1,6 +1,9 @@
 <template>
   <div class="cliproot">
     <div class="optpanel mb-3">
+      <button type="button" class="btn btn-outline-primary" @click="dosplit">
+        拆分
+      </button>
       <button
         type="button"
         class="btn btn-outline-primary"
@@ -41,9 +44,6 @@
       </button>
       <button type="button" class="btn btn-outline-primary" @click="doplay">
         {{ playing ? "Stop" : "Play" }}
-      </button>
-      <button type="button" class="btn btn-outline-primary" @click="dosplit">
-        拆分
       </button>
     </div>
     <WavForm
