@@ -42,6 +42,9 @@
       <button type="button" class="btn btn-outline-primary" @click="doplay">
         {{ playing ? "Stop" : "Play" }}
       </button>
+      <button type="button" class="btn btn-outline-primary" @click="dosplit">
+        拆分
+      </button>
     </div>
     <WavForm
       id="clipeditor"
@@ -208,6 +211,12 @@ export default {
       this.start = idx;
       this.end = this.clip.words.length - 1;
       this.doplay();
+    },
+    //将一个piece拆分成两个piece，两边都需要修改
+    dosplit() {
+      if (this.end || this.start) {
+        this.$emit("split", this.end || this.start);
+      }
     },
     doplay() {
       if (this.playing) {

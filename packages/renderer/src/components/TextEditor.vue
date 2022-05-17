@@ -97,6 +97,7 @@
       <ClipEditor
         v-if="!isPlaying && active >= 0 && active < result.length"
         :clip="result[active]"
+        @split="dosplit"
       />
     </div>
   </div>
@@ -236,6 +237,22 @@ export default defineComponent({
           break;
         }
       }
+    },
+    dosplit(position) {
+      console.log("split", position, this.result[this.active]);
+      const curclip = { ...this.result[this.active] };
+      const newclip1 = {
+        ...curclip,
+        words: curclip.words.slice(0, position + 1),
+        endms: curclip.startms + curclip.words[position].OffsetEndMs,
+      };
+      const newclip2 = {
+        ...curclip,
+        words: curclip.words.slice(position + 1),
+        startms: curclip.startms + curclip.words[position].OffsetEndMs,
+      };
+      this.result.splice(this.active, 1, newclip1);
+      this.result.splice(this.active + 1, 0, newclip2);
     },
     searchPrev() {
       for (let i = this.searchActive - 1; i >= 0; i--) {
