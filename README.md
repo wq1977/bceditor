@@ -4,6 +4,8 @@
 
 目前仅支持中国大陆普通话，仅支持采样率44100hz单声道声音
 
+使用方法参见这里： https://www.bilibili.com/video/BV1ku411B7Zh/
+
 ## 使用方法
 
 在主目录创建配置文件 .bceditor.json
