@@ -58,5 +58,8 @@
     "vue": "3.2.21",
     "vue-router": "4.0.12",
     "vuex": "^4.0.2"
+  },
+  "electronDownload": {
+      "mirror": "https://npm.taobao.org/mirrors/electron/"
   }
 }
