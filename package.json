@@ -1,6 +1,6 @@
 {
   "name": "bceditor",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "author": "wesley.wang",
   "private": true,
   "engines": {
@@ -60,6 +60,6 @@
     "vuex": "^4.0.2"
   },
   "electronDownload": {
-      "mirror": "https://npm.taobao.org/mirrors/electron/"
+    "mirror": "https://npm.taobao.org/mirrors/electron/"
   }
 }
