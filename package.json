@@ -26,7 +26,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "1.9.4",
     "cross-env": "7.0.3",
-    "electron": "15.3.0",
+    "electron": "^16.0.1",
     "electron-builder": "22.13.1",
     "electron-devtools-installer": "3.2.0",
     "eslint": "8.1.0",
@@ -42,7 +42,6 @@
     "av": "^0.4.9",
     "buffer-alloc": "^1.2.0",
     "cos-nodejs-sdk-v5": "^2.10.10",
-    "electron": "^16.0.1",
     "electron-config": "^2.0.0",
     "electron-updater": "4.6.1",
     "har-validator": "^5.1.5",
