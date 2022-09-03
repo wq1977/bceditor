@@ -112,10 +112,10 @@ const api = {
   },
   async joinWav() {
     const result = await ipcRenderer.invoke("select-wavs");
-    const wavs = result.filePaths.map((path) => {
-      let buffer = fs.readFileSync(path);
-      return wav.decode(buffer);
-    });
+    const wavs = result.filePaths.map((path) => new WavFile(path));
+    for (let wav of wavs) {
+      await wav.init();
+    }
     const totalLen = wavs.reduce((r, i) => r + i.channelData[0].length, 0);
     const buf = new Float32Array(totalLen);
     let offset = 0;
