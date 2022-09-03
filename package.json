@@ -11,7 +11,7 @@
   "scripts": {
     "build": "node scripts/build.js",
     "precompile": "npm version --new-version patch && cross-env MODE=production npm run build",
-    "compile": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder build --config electron-builder.config.js --config.asar=true",
+    "compile": "PYTHON_PATH=/Users/wwq/.pyenv/versions/2.7.18/bin/python CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder build --config electron-builder.config.js --config.asar=true",
     "pretest": "npm run build",
     "test": "node tests/app.spec.js",
     "watch": "node scripts/watch.js",
