@@ -42,6 +42,7 @@
     "av": "^0.4.9",
     "buffer-alloc": "^1.2.0",
     "cos-nodejs-sdk-v5": "^2.10.10",
+    "electron": "^16.0.1",
     "electron-config": "^2.0.0",
     "electron-updater": "4.6.1",
     "har-validator": "^5.1.5",
