@@ -101,7 +101,7 @@ export default {
     const { play, stop, selectMedia, getSample } = useElectron();
     return { play, stop, selectMedia, getSample };
   },
-  props: ["clip"],
+  props: ["clip","realplay"],
   data() {
     return {
       opts: [],
@@ -219,26 +219,28 @@ export default {
       }
     },
     doplay() {
-      if (this.playing) {
-        this.stop();
-        this.playing = false;
-        return;
-      }
-      this.playing = true;
-      const { pieces, plugins } = this.currentPieces;
-      this.play(
-        this.wavs.map((wav) => ({ id: wav.id })),
-        () => {
-          return { ...this.volumn };
-        },
-        {
-          pieces,
-        },
-        (playing, piece, pos) => {
-          this.playing = playing;
-        },
-        JSON.parse(JSON.stringify(plugins))
-      );
+      // if (this.playing) {
+      //   this.stop();
+      //   this.playing = false;
+      //   return;
+      // }
+      // this.playing = true;
+      const { pieces } = this.currentPieces;
+      // console.log('hehe', pieces, this.currentPieces)
+      this.realplay(pieces)
+      // this.play(
+      //   this.wavs.map((wav) => ({ id: wav.id })),
+      //   () => {
+      //     return { ...this.volumn };
+      //   },
+      //   {
+      //     pieces,
+      //   },
+      //   (playing, piece, pos) => {
+      //     this.playing = playing;
+      //   },
+      //   JSON.parse(JSON.stringify(plugins))
+      // );
     },
     choose(idx) {
       if (this.start === false || idx < this.start) this.start = idx;

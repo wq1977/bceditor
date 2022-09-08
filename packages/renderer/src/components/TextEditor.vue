@@ -21,7 +21,7 @@
           上一个
         </button>
         <div style="flex: 1" />
-        <button type="button" class="btn btn-outline-primary" @click="doplay">
+        <button type="button" class="btn btn-outline-primary" @click="doplay()">
           {{ isPlaying ? "Stop" : "Play" }}
         </button>
         <button type="button" class="btn btn-outline-primary" @click="docopy">
@@ -97,6 +97,7 @@
       <ClipEditor
         v-if="!isPlaying && active >= 0 && active < result.length"
         :clip="result[active]"
+        :realplay="doplay"
         @split="dosplit"
       />
     </div>
@@ -398,7 +399,7 @@ export default defineComponent({
         dstelem.scrollIntoViewIfNeeded();
       }
     },
-    doplay() {
+    doplay(activePieces) {
       if (this.isPlaying) {
         this.isPlaying = false;
         this.stop();
@@ -413,8 +414,13 @@ export default defineComponent({
       this.result = [...this.result];
       const { pieces, plugins } = this.wavopts;
       const playPieces = pieces.filter(
-        (piece) => piece.originidx >= this.active
+        (piece) => piece.originidx > this.active
       );
+      if (!activePieces || activePieces.length === 0) {
+        activePieces = pieces.filter(
+          (piece) => piece.originidx === this.active
+        )
+      }
       const playPlugins = plugins
         .filter((p) => p.offset >= posbase)
         .map((p) => ({
@@ -427,7 +433,7 @@ export default defineComponent({
           return { ...this.volumn };
         },
         {
-          pieces: playPieces,
+          pieces: [...activePieces, ...playPieces],
         },
         (playing, piece, pos) => {
           this.isPlaying = playing;
