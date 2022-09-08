@@ -210,7 +210,9 @@ export default {
     playFrom(idx) {
       this.start = idx;
       this.end = this.clip.words.length - 1;
-      this.doplay();
+      const { pieces } = this.currentPieces;
+      this.realplay(pieces)
+      // this.doplay();
     },
     //将一个piece拆分成两个piece，两边都需要修改
     dosplit() {
@@ -219,28 +221,27 @@ export default {
       }
     },
     doplay() {
-      // if (this.playing) {
-      //   this.stop();
-      //   this.playing = false;
-      //   return;
-      // }
-      // this.playing = true;
-      const { pieces } = this.currentPieces;
-      // console.log('hehe', pieces, this.currentPieces)
-      this.realplay(pieces)
-      // this.play(
-      //   this.wavs.map((wav) => ({ id: wav.id })),
-      //   () => {
-      //     return { ...this.volumn };
-      //   },
-      //   {
-      //     pieces,
-      //   },
-      //   (playing, piece, pos) => {
-      //     this.playing = playing;
-      //   },
-      //   JSON.parse(JSON.stringify(plugins))
-      // );
+      // this.realplay(pieces)
+      if (this.playing) {
+        this.stop();
+        this.playing = false;
+        return;
+      }
+      this.playing = true;
+      const { pieces,plugins } = this.currentPieces;
+      this.play(
+        this.wavs.map((wav) => ({ id: wav.id })),
+        () => {
+          return { ...this.volumn };
+        },
+        {
+          pieces,
+        },
+        (playing, piece, pos) => {
+          this.playing = playing;
+        },
+        JSON.parse(JSON.stringify(plugins))
+      );
     },
     choose(idx) {
       if (this.start === false || idx < this.start) this.start = idx;
